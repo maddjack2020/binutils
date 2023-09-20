@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+SHELL = /bin/bash
+
+PATH := /opt/cross/bin:$(PATH)
+CONFARGS = --host=x86_64-xgcc-linux-gnu --disable-compressed-debug-sections \
+	--disable-rpath --disable-static --disable-werror --enable-64-bit-bfd \
+	--enable-default-hash-style=gnu --enable-deterministic-archives \
+	--enable-gold --enable-gprofng=no --enable-multilib --enable-new-dtags \
+	--enable-plugins --enable-relro --enable-separate-code --enable-shared \
+	--enable-targets=x86_64-linux-gnux32,x86_64-pep --enable-threads \
+	--with-build-sysroot=/opt/cross/x86_64-xgcc-linux-gnu/sys-root \
+	--with-gold-ldflags=-static-libstdc++ --with-sysroot=/
+
+export DEB_BUILD_MAINT_OPTIONS := hardening=-all,+pie,+relro reproducible=+all,-timeless
+
+%:
+	dh $@ --without autoreconf
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(CONFARGS)
+
+override_dh_auto_install:
+	dh_auto_install -- tooldir=/usr
+	rm debian/binutils/usr/lib/*/*.la

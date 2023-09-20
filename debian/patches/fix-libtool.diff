@@ -1,0 +1,13 @@
+Index: binutils-2.41/ltmain.sh
+===================================================================
+--- binutils-2.41.orig/ltmain.sh
++++ binutils-2.41/ltmain.sh
+@@ -6006,7 +6006,7 @@ func_mode_link ()
+ 	      if test -n "$inst_prefix_dir"; then
+ 		case $libdir in
+ 		  [\\/]*)
+-		    add_dir="$add_dir -L$inst_prefix_dir$libdir"
++		    add_dir=" -L$inst_prefix_dir$libdir"
+ 		    ;;
+ 		esac
+ 	      fi
